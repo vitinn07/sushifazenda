@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sushi Fazenda | Cardapio Premium</title>
+    <meta
+      name="description"
+      content="Cardapio completo do Sushi Fazenda com layout clean, categorias estilizadas e pedido direto no WhatsApp."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-bg"></div>
+    <header class="header">
+      <a class="brand" href="#inicio">
+        <img
+          class="brand-logo"
+          src="https://s3.amazonaws.com/up.pediraqui.com/image-Photoroom_(3)(20250904120924).png"
+          alt="Logo Sushi Fazenda"
+        />
+        Sushi Fazenda
+      </a>
+      <nav class="nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#menu">Cardapio</a>
+        <a href="#categorias">Categorias</a>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-trigger" id="cart-trigger" type="button" aria-label="Abrir carrinho">
+          Carrinho <span id="cart-count">0</span>
+        </button>
+        <a class="btn btn-sm" href="https://wa.me/5531996559603" target="_blank" rel="noopener noreferrer">Pedir Agora</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-content reveal">
+          <p class="eyebrow">SUSHI FAZENDA</p>
+          <h1>Cardapio completo em um layout novo, clean e premium.</h1>
+          <p class="hero-text">
+            Paleta em vermelho e preto, categorias elegantes e produtos com
+            fotos reais para uma experiencia de compra mais moderna.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="https://wa.me/5531996559603?text=Oi%2C%20vim%20pelo%20site%20e%20quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Fazer pedido</a>
+            <a class="btn btn-ghost" href="#menu">Explorar cardapio</a>
+          </div>
+          <div class="hero-metrics">
+            <div>
+              <strong>4.9</strong>
+              <span>Avaliacao media</span>
+            </div>
+            <div>
+              <strong>WhatsApp</strong>
+              <span>Atendimento direto</span>
+            </div>
+            <div>
+              <strong>Cardapio real</strong>
+              <span>Itens oficiais</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card reveal">
+          <div class="hero-card-glow"></div>
+          <h3>Promocao Barca Top Salmao</h3>
+          <p>33 pecas com brinde de 5 unidades simples.</p>
+          <div class="price-row">
+            <span class="price">R$ 145,00</span>
+            <span class="tag">Mais pedido</span>
+          </div>
+          <a class="btn btn-full" href="https://wa.me/5531996559603?text=Oi%2C%20quero%20pedir%20a%20Promocao%20Barca%20Top%20Salmao." target="_blank" rel="noopener noreferrer">Pedir no WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="promo-strip reveal" id="promocoes-do-dia">
+        <div class="section-head">
+          <p class="eyebrow">PROMOCOES DO DIA</p>
+          <h2>Selecao exclusiva para uma experiencia de sushi premium.</h2>
+        </div>
+        <div class="promo-banner" id="promo-banner">
+          <button class="promo-nav prev" id="promo-prev" aria-label="Promoção anterior">‹</button>
+          <div class="promo-slides" id="promo-track"></div>
+          <button class="promo-nav next" id="promo-next" aria-label="Próxima promoção">›</button>
+          <div class="promo-dots" id="promo-dots"></div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="categorias">
+        <div class="section-head">
+          <p class="eyebrow">CATEGORIAS</p>
+          <h2>Navegue pelo cardapio de forma rapida e elegante.</h2>
+        </div>
+        <div class="category-tabs" id="category-tabs"></div>
+      </section>
+
+      <section class="section reveal" id="menu">
+        <div class="section-head">
+          <p class="eyebrow">CARDAPIO</p>
+          <h2>Itens, fotos e valores organizados por categoria.</h2>
+        </div>
+        <div class="menu-grid" id="menu-grid"></div>
+      </section>
+
+      <section class="cta reveal" id="pedido">
+        <h2>Feche seu pedido em segundos.</h2>
+        <p>
+          Clique no botao abaixo para ir direto para a conversa no WhatsApp.
+        </p>
+        <a class="btn" href="https://wa.me/5531996559603?text=Oi%2C%20quero%20ver%20o%20cardapio%20e%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Quero pedir agora</a>
+      </section>
+    </main>
+
+    <a
+      class="whatsapp-float"
+      href="https://wa.me/5531996559603?text=Oi%2C%20vim%20pelo%20site%20e%20quero%20fazer%20um%20pedido."
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Abrir conversa no WhatsApp"
+      title="Pedir no WhatsApp"
+    >💬</a>
+
+    <div class="overlay hidden" id="overlay"></div>
+
+    <section class="item-modal hidden" id="item-modal" aria-live="polite">
+      <button class="close-btn" type="button" id="close-item-modal" aria-label="Fechar">×</button>
+      <img id="item-modal-image" src="" alt="" />
+      <div class="item-modal-content">
+        <p class="eyebrow" id="item-modal-category"></p>
+        <h3 id="item-modal-name"></h3>
+        <p id="item-modal-description"></p>
+        <div class="item-modal-footer">
+          <strong id="item-modal-price"></strong>
+          <button class="btn" id="add-to-cart-btn" type="button">Adicionar ao carrinho</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="cart-drawer hidden" id="cart-drawer" aria-live="polite">
+      <div class="cart-header">
+        <h3>Seu carrinho</h3>
+        <button class="close-btn" type="button" id="close-cart" aria-label="Fechar carrinho">×</button>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-summary">
+        <p>Total: <strong id="cart-total">R$ 0,00</strong></p>
+        <button class="btn btn-full" type="button" id="checkout-btn">Comprar no WhatsApp</button>
+      </div>
+    </aside>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
