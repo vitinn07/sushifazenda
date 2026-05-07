@@ -464,7 +464,6 @@ function scoreItemForProfile(item, profile) {
 
 function buildComboFromOrderedItems(orderedItems, desiredItems, budget, profile) {
   // No modo econômico, primeiro escolhemos itens principais para evitar combos formados só por molhos/acréscimos.
-  const selectedOccasion = occasionSelectEl.querySelector(".choice-chip.active");
   const isComplementCategory = (item) => {
     const category = (item.category || "").toLowerCase();
     return category.includes("molhos") || category.includes("acréscimos");
@@ -618,25 +617,6 @@ function generateSmartCombo() {
   suggestedCombos.push(chosenCombo);
   suggestedSignatures.add(chosenCombo.signature);
   renderSuggestedCombos();
-}
-
-  suggestorResultEl.innerHTML = `
-    <h3>Combo inteligente sugerido</h3>
-    <p>Perfil: <strong>${profile}</strong> | Ocasião: <strong>${occasion}</strong> | Total estimado: <strong>${formatCurrency(total)}</strong></p>
-    <ul class="suggestor-list">
-      ${selected.map((item) => `<li>${item.name} - ${item.price}</li>`).join("")}
-    </ul>
-    <div class="suggestor-actions">
-      <button class="btn" type="button" id="add-suggested-btn">Adicionar combo ao carrinho</button>
-      <a class="btn btn-ghost" target="_blank" rel="noopener noreferrer"
-        href="https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`Oi! Quero este combo sugerido pelo site:\n${selected.map((item) => `- ${item.name} (${item.price})`).join("\n")}\nTotal estimado: ${formatCurrency(total)}`)}">Enviar no WhatsApp</a>
-    </div>
-  `;
-
-  const addSuggestedBtn = document.querySelector("#add-suggested-btn");
-  addSuggestedBtn?.addEventListener("click", () => {
-    selected.forEach((item) => addToCart(item));
-  });
 }
 
 cartTriggerEl.addEventListener("click", openCart);
