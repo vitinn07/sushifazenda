@@ -432,6 +432,7 @@ function checkoutWhatsApp() {
 function scoreItemForProfile(item, profile) {
   const name = item.name.toLowerCase();
   const description = item.description.toLowerCase();
+  const category = (item.category || "").toLowerCase();
   const text = `${name} ${description}`;
   let score = 0;
 
@@ -445,6 +446,9 @@ function scoreItemForProfile(item, profile) {
     const price = parsePriceToNumber(item.price);
     if (price <= 35) score += 4;
     if (text.includes("combo") || text.includes("promo")) score += 3;
+    if (category.includes("molhos") || category.includes("acréscimos")) score -= 6;
+    if (category.includes("barcas") || category.includes("para 1 pessoa")) score += 2;
+    if (category.includes("hots") || category.includes("temaki")) score += 1;
   }
 
   if (profile === "equilibrado") {
@@ -483,14 +487,41 @@ function generateSmartCombo() {
     }))
     .sort((a, b) => b.score - a.score);
 
+  // No modo econômico, primeiro escolhemos itens principais para evitar combos formados só por molhos/acréscimos.
+  const isComplementCategory = (item) => {
+    const category = (item.category || "").toLowerCase();
+    return category.includes("molhos") || category.includes("acréscimos");
+  };
+
   const selected = [];
   let total = 0;
 
-  for (const item of scored) {
-    const price = parsePriceToNumber(item.price);
-    if (selected.length < desiredItems && total + price <= budget) {
-      selected.push(item);
-      total += price;
+  if (profile === "economico") {
+    const primaryItems = scored.filter((item) => !isComplementCategory(item));
+    const complementItems = scored.filter((item) => isComplementCategory(item));
+
+    for (const item of primaryItems) {
+      const price = parsePriceToNumber(item.price);
+      if (selected.length < desiredItems && total + price <= budget) {
+        selected.push(item);
+        total += price;
+      }
+    }
+
+    for (const item of complementItems) {
+      const price = parsePriceToNumber(item.price);
+      if (selected.length < desiredItems && total + price <= budget) {
+        selected.push(item);
+        total += price;
+      }
+    }
+  } else {
+    for (const item of scored) {
+      const price = parsePriceToNumber(item.price);
+      if (selected.length < desiredItems && total + price <= budget) {
+        selected.push(item);
+        total += price;
+      }
     }
   }
 
