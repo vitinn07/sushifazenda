@@ -52,7 +52,7 @@ const menuData = {
       name: "Promocao Barca Alegria da Fazenda (30 pecas)",
       price: "R$ 55,00",
       description: "Combinado ideal para compartilhar, com selecao variada de pecas.",
-      image: "https://s3.amazonaws.com/up.pediraqui.com/WhatsApp_Image_2026-04-16_at_20.29.52(20260416200408).jpeg",
+      image: "https://s3.amazonaws.com/up.pediraqui.com/19,90(20260410180432).jpg",
     },
     {
       name: "Promocao Combo skin (25 und) 1 coca lata",
@@ -64,7 +64,7 @@ const menuData = {
       name: "Promocao Combo Full 20 pecas",
       price: "R$ 80,00",
       description: "Combinado especial com 20 pecas e brinde de hot pate de salmao simples.",
-      image: "https://s3.amazonaws.com/up.pediraqui.com/Sem_titulo(20260116120101).jpg",
+      image: "./imag/sushi.jpg",
     },
   ],
   Acrescimos: [

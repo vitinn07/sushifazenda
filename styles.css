@@ -125,7 +125,7 @@ body {
 .promo-banner {
   position: relative;
   overflow: hidden;
-  min-height: 380px;
+  min-height: 300px;
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: #0c0c0d;
@@ -142,9 +142,10 @@ body {
   min-width: 100%;
   position: relative;
   display: grid;
-  align-items: end;
-  min-height: 380px;
-  padding: 1.4rem;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  min-height: 320px;
+  padding: 1.4rem 1.4rem 1.4rem 2rem;
   text-decoration: none;
   color: var(--text);
 }
@@ -153,7 +154,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(95deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.64) 38%, rgba(0, 0, 0, 0.25) 68%, rgba(0, 0, 0, 0.62) 100%);
+  background: linear-gradient(95deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.64) 40%, rgba(0, 0, 0, 0.26) 68%, rgba(0, 0, 0, 0.62) 100%);
   z-index: 1;
 }
 
@@ -167,17 +168,20 @@ body {
 
 .promo-slide-bg {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  right: 13%;
+  bottom: 0;
+  width: 52%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: right center;
   z-index: 0;
 }
 
 .promo-content {
   position: relative;
   z-index: 2;
-  max-width: 620px;
+  max-width: 540px;
   padding: 1rem;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -512,8 +516,8 @@ h2 {
 
 .menu-item img {
   width: 100%;
-  height: 220px;
-  object-fit: cover;
+  height: 240px;
+  object-fit: contain;
   object-position: center;
   border-radius: 12px;
   margin-bottom: 0.8rem;
@@ -571,7 +575,7 @@ h2 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(92vw, 720px);
+  width: min(95vw, 760px);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: #111;
@@ -579,10 +583,13 @@ h2 {
 }
 
 .item-modal img {
+  display: block;
   width: 100%;
-  max-height: 48vh;
-  object-fit: cover;
+  height: auto;
+  max-height: 62vh;
+  object-fit: contain;
   object-position: center;
+  background: #111;
 }
 
 .item-modal-content {
