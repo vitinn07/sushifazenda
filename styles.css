@@ -937,6 +937,14 @@ h2 {
   margin-top: 0.8rem;
 }
 
+.suggestor-combo-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.02);
+  margin-top: 0.8rem;
+}
+
 @keyframes suggestorReveal {
   0% {
     opacity: 0;

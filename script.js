@@ -206,6 +206,9 @@ let selectedItem = null;
 const cart = [];
 let promoIndex = 0;
 let promoTimer = null;
+const maxSuggestedCombos = 3;
+let suggestedCombos = [];
+const suggestedSignatures = new Set();
 
 function parsePriceToNumber(price) {
   return Number(price.replace("R$", "").replace(/\s/g, "").replace(".", "").replace(",", "."));
@@ -459,8 +462,105 @@ function scoreItemForProfile(item, profile) {
   return score;
 }
 
+function buildComboFromOrderedItems(orderedItems, desiredItems, budget, profile) {
+  // No modo econômico, primeiro escolhemos itens principais para evitar combos formados só por molhos/acréscimos.
+  const selectedOccasion = occasionSelectEl.querySelector(".choice-chip.active");
+  const isComplementCategory = (item) => {
+    const category = (item.category || "").toLowerCase();
+    return category.includes("molhos") || category.includes("acréscimos");
+  };
+
+  const selected = [];
+  let total = 0;
+
+  if (profile === "economico") {
+    const primaryItems = orderedItems.filter((item) => !isComplementCategory(item));
+    const complementItems = orderedItems.filter((item) => isComplementCategory(item));
+
+    for (const item of primaryItems) {
+      const price = parsePriceToNumber(item.price);
+      if (selected.length < desiredItems && total + price <= budget) {
+        selected.push(item);
+        total += price;
+      }
+    }
+
+    for (const item of complementItems) {
+      const price = parsePriceToNumber(item.price);
+      if (selected.length < desiredItems && total + price <= budget) {
+        selected.push(item);
+        total += price;
+      }
+    }
+  } else {
+    for (const item of orderedItems) {
+      const price = parsePriceToNumber(item.price);
+      if (selected.length < desiredItems && total + price <= budget) {
+        selected.push(item);
+        total += price;
+      }
+    }
+  }
+
+  return { selected, total };
+}
+
+function renderSuggestedCombos() {
+  if (!suggestorResultEl) return;
+  if (!suggestedCombos.length) {
+    suggestorResultEl.innerHTML = "<p>Seu combo recomendado aparecerá aqui.</p>";
+    return;
+  }
+
+  suggestorResultEl.innerHTML = `
+    <h3>Combos inteligentes sugeridos (${suggestedCombos.length}/${maxSuggestedCombos})</h3>
+    ${suggestedCombos
+      .map(
+        (combo, index) => `
+      <div class="suggestor-combo-card">
+        <p><strong>Opção ${index + 1}</strong> | Perfil: <strong>${combo.profile}</strong> | Ocasião: <strong>${combo.occasion}</strong> | Total: <strong>${formatCurrency(combo.total)}</strong></p>
+        <ul class="suggestor-list">
+          ${combo.selected.map((item) => `<li>${item.name} - ${item.price}</li>`).join("")}
+        </ul>
+        <div class="suggestor-actions">
+          <button class="btn" type="button" data-add-combo="${index}">Adicionar opção ${index + 1} ao carrinho</button>
+          <a class="btn btn-ghost" target="_blank" rel="noopener noreferrer"
+            href="https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`Oi! Quero este combo sugerido pelo site:\n${combo.selected
+              .map((item) => `- ${item.name} (${item.price})`)
+              .join("\n")}\nTotal estimado: ${formatCurrency(combo.total)}`)}">Enviar no WhatsApp</a>
+        </div>
+      </div>
+    `
+      )
+      .join("")}
+    ${
+      suggestedCombos.length >= maxSuggestedCombos
+        ? '<p>Limite de 3 opções atingido. Ajuste ocasião/perfil/orçamento para gerar novas.</p>'
+        : ""
+    }
+  `;
+
+  suggestorResultEl.querySelectorAll("[data-add-combo]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const comboIndex = Number(btn.getAttribute("data-add-combo"));
+      const combo = suggestedCombos[comboIndex];
+      combo?.selected.forEach((item) => addToCart(item));
+    });
+  });
+}
+
+function resetSuggestedCombos() {
+  suggestedCombos = [];
+  suggestedSignatures.clear();
+  renderSuggestedCombos();
+}
+
 function generateSmartCombo() {
   if (!occasionSelectEl || !budgetInputEl || !profileSelectEl || !suggestorResultEl) return;
+  if (suggestedCombos.length >= maxSuggestedCombos) {
+    renderSuggestedCombos();
+    return;
+  }
 
   const selectedOccasion = occasionSelectEl.querySelector(".choice-chip.active");
   const selectedProfile = profileSelectEl.querySelector(".choice-chip.active");
@@ -487,48 +587,38 @@ function generateSmartCombo() {
     }))
     .sort((a, b) => b.score - a.score);
 
-  // No modo econômico, primeiro escolhemos itens principais para evitar combos formados só por molhos/acréscimos.
-  const isComplementCategory = (item) => {
-    const category = (item.category || "").toLowerCase();
-    return category.includes("molhos") || category.includes("acréscimos");
-  };
+  let chosenCombo = null;
 
-  const selected = [];
-  let total = 0;
-
-  if (profile === "economico") {
-    const primaryItems = scored.filter((item) => !isComplementCategory(item));
-    const complementItems = scored.filter((item) => isComplementCategory(item));
-
-    for (const item of primaryItems) {
-      const price = parsePriceToNumber(item.price);
-      if (selected.length < desiredItems && total + price <= budget) {
-        selected.push(item);
-        total += price;
-      }
-    }
-
-    for (const item of complementItems) {
-      const price = parsePriceToNumber(item.price);
-      if (selected.length < desiredItems && total + price <= budget) {
-        selected.push(item);
-        total += price;
-      }
-    }
-  } else {
-    for (const item of scored) {
-      const price = parsePriceToNumber(item.price);
-      if (selected.length < desiredItems && total + price <= budget) {
-        selected.push(item);
-        total += price;
-      }
+  for (let attempt = 0; attempt < scored.length; attempt += 1) {
+    const offset = (suggestedCombos.length * 2 + attempt) % scored.length;
+    const ordered = [...scored.slice(offset), ...scored.slice(0, offset)];
+    const combo = buildComboFromOrderedItems(ordered, desiredItems, budget, profile);
+    if (!combo.selected.length) continue;
+    const signature = combo.selected.map((item) => item.name).sort().join("|");
+    if (!suggestedSignatures.has(signature)) {
+      chosenCombo = { ...combo, profile, occasion, signature };
+      break;
     }
   }
 
-  if (!selected.length) {
-    selected.push(scored[0]);
-    total = parsePriceToNumber(scored[0].price);
+  if (!chosenCombo && scored.length) {
+    const fallback = buildComboFromOrderedItems(scored, desiredItems, budget, profile);
+    if (fallback.selected.length) {
+      chosenCombo = {
+        ...fallback,
+        profile,
+        occasion,
+        signature: fallback.selected.map((item) => item.name).sort().join("|"),
+      };
+    }
   }
+
+  if (!chosenCombo) return;
+
+  suggestedCombos.push(chosenCombo);
+  suggestedSignatures.add(chosenCombo.signature);
+  renderSuggestedCombos();
+}
 
   suggestorResultEl.innerHTML = `
     <h3>Combo inteligente sugerido</h3>
@@ -571,12 +661,15 @@ function setupChoiceGroups() {
       chip.addEventListener("click", () => {
         chips.forEach((item) => item.classList.remove("active"));
         chip.classList.add("active");
+        resetSuggestedCombos();
       });
     });
   });
 }
 
 setupChoiceGroups();
+budgetInputEl?.addEventListener("input", resetSuggestedCombos);
+renderSuggestedCombos();
 
 renderTabs();
 renderMenu();
