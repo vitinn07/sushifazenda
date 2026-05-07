@@ -39,45 +39,50 @@ const promoTrackEl = document.querySelector("#promo-track");
 const promoDotsEl = document.querySelector("#promo-dots");
 const promoPrevEl = document.querySelector("#promo-prev");
 const promoNextEl = document.querySelector("#promo-next");
+const occasionSelectEl = document.querySelector("#occasion-select");
+const budgetInputEl = document.querySelector("#budget-input");
+const profileSelectEl = document.querySelector("#profile-select");
+const generateComboBtnEl = document.querySelector("#generate-combo-btn");
+const suggestorResultEl = document.querySelector("#suggestor-result");
 
 const menuData = {
-  "Promocoes Sushi da Fazenda": [
+  "Promoções Sushi da Fazenda": [
     {
-      name: "Tortinha especial 14 pecas",
+      name: "Tortinha especial 14 peças",
       price: "R$ 19,90",
-      description: "Tortinhas de salmao grelhado com recheios cremosos e finalizacao da casa.",
+      description: "Tortinhas de salmão grelhado com recheios cremosos e finalização da casa.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/19,90(20260410180432).jpg",
     },
     {
-      name: "Promocao Barca Alegria da Fazenda (30 pecas)",
+      name: "Promoção Barca Alegria da Fazenda (30 peças)",
       price: "R$ 55,00",
-      description: "Combinado ideal para compartilhar, com selecao variada de pecas.",
+      description: "Combinado ideal para compartilhar, com seleção variada de peças.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/19,90(20260410180432).jpg",
     },
     {
-      name: "Promocao Combo skin (25 und) 1 coca lata",
+      name: "Promoção Combo skin (25 und) 1 coca lata",
       price: "R$ 35,90",
       description: "Combo de 25 unidades com acompanhamentos e 1 coca lata.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/combo_kin(20260304180343).jpg",
     },
     {
-      name: "Promocao Combo Full 20 pecas",
+      name: "Promoção Combo Full 20 peças",
       price: "R$ 80,00",
-      description: "Combinado especial com 20 pecas e brinde de hot pate de salmao simples.",
+      description: "Combinado especial com 20 peças e brinde de hot patê de salmão simples.",
       image: "./imag/sushi.jpg",
     },
   ],
-  Acrescimos: [
+  Acréscimos: [
     {
-      name: "Hashi Reutilizavel",
+      name: "Hashi Reutilizável",
       price: "R$ 5,00",
-      description: "Hashi reutilizavel de melamina, pratico para o dia a dia.",
+      description: "Hashi reutilizável de melamina, prático para o dia a dia.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/HASHI_NOVO(20260206180239).jpg",
     },
     {
       name: "Gengibre (15g)",
       price: "R$ 5,00",
-      description: "Acompanhamento tradicional para limpar o paladar entre as pecas.",
+      description: "Acompanhamento tradicional para limpar o paladar entre as peças.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/gengibre(20250816090805).jpg",
     },
     {
@@ -89,85 +94,85 @@ const menuData = {
     {
       name: "Cebola Crispy",
       price: "R$ 10,00",
-      description: "Finalizacao crocante para deixar os combinados ainda mais saborosos.",
+      description: "Finalização crocante para deixar os combinados ainda mais saborosos.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/cebola_crispy(20251114121106).webp",
     },
   ],
   Barcas: [
     {
-      name: "Barca Combo King puro salmao (54 pecas)",
+      name: "Barca Combo King puro salmão (54 peças)",
       price: "R$ 145,00",
-      description: "Barca premium com destaque para pecas de salmao.",
+      description: "Barca premium com destaque para peças de salmão.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/KING_NA_BARCA(20260116120157).png",
     },
     {
-      name: "Barca Grelhadinho da Fazenda (35 pecas)",
+      name: "Barca Grelhadinho da Fazenda (35 peças)",
       price: "R$ 105,00",
-      description: "Selecao de pecas grelhadas com sabor marcante.",
+      description: "Seleção de peças grelhadas com sabor marcante.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/barca_grelhadinho(20260108180126).jpg",
     },
     {
-      name: "Barca Combinado Red + Tortinha (40 pecas)",
+      name: "Barca Combinado Red + Tortinha (40 peças)",
       price: "R$ 145,00",
       description: "Combinacao equilibrada para dividir em boa companhia.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/red_na_barca(20260108180132).jpg",
     },
     {
-      name: "Barca Top salmao 33 pecas",
+      name: "Barca Top salmão 33 peças",
       price: "R$ 145,00",
-      description: "Barca com 33 pecas e brinde de 5 unidades simples.",
+      description: "Barca com 33 peças e brinde de 5 unidades simples.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/combo_top_salmao(20260122190151).jpg",
     },
   ],
   "Para 1 pessoa": [
     {
-      name: "Combo Nelore (25 pecas)",
+      name: "Combo Nelore (25 peças)",
       price: "R$ 55,00",
       description: "Combinado completo para 1 pessoa com boa variedade.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/NELORE(20260116120153).jpg",
     },
     {
-      name: "Sushi do dia - Quarta (15 pecas)",
+      name: "Sushi do dia - Quarta (15 peças)",
       price: "R$ 35,00",
-      description: "Selecao especial do dia com excelente custo-beneficio.",
+      description: "Seleção especial do dia com excelente custo-benefício.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/128(20211020211037).jpeg",
     },
     {
-      name: "Mini Temaki Aberto - 4 pecas",
+      name: "Mini Temaki Aberto - 4 peças",
       price: "R$ 42,00",
-      description: "Opcao individual com variedade de sabores e texturas.",
+      description: "Opção individual com variedade de sabores e texturas.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/mini_temaki(20260118110130).jpg",
     },
   ],
   Temaki: [
     {
-      name: "Temaki Salmao",
+      name: "Temaki Salmão",
       price: "R$ 25,00",
-      description: "Classico preparado com ingredientes frescos e montagem caprichada.",
+      description: "Clássico preparado com ingredientes frescos e montagem caprichada.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/WhatsApp_Image_2026-01-11_at_10.53.59(20260111110131).jpeg",
     },
     {
       name: "Mini Temaki Aberto",
       price: "R$ 42,00",
-      description: "Versao compacta, pratica e muito saborosa.",
+      description: "Versão compacta, prática e muito saborosa.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/mini_temaki(20260118110130).jpg",
     },
   ],
   Hots: [
     {
-      name: "Hot Pate de Salmao com Doritos",
+      name: "Hot Patê de Salmão com Doritos",
       price: "R$ 20,00",
-      description: "Hot com pate de salmao e finalizacao crocante com Doritos.",
+      description: "Hot com patê de salmão e finalização crocante com Doritos.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/hot_doritos(20260312130314).jpg",
     },
     {
-      name: "Hot Pate de Salmao com couve crispy",
+      name: "Hot Patê de Salmão com couve crispy",
       price: "R$ 20,00",
-      description: "Versao especial com couve crispy para mais crocancia.",
+      description: "Versão especial com couve crispy para mais crocância.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/hot_couve(20260312130314).jpg",
     },
     {
-      name: "Hot Pate de Salmao com geleia de pimenta doce",
+      name: "Hot Patê de Salmão com geleia de pimenta doce",
       price: "R$ 20,00",
       description: "Finalizado com geleia de pimenta doce, equilibrando sabor e intensidade.",
       image: "https://s3.amazonaws.com/up.pediraqui.com/geleia_de_pimenta(20260312130340).jpg",
@@ -258,7 +263,7 @@ function renderMenu() {
 function renderPromoBanner() {
   if (!promoTrackEl || !promoDotsEl) return;
 
-  const promoItems = (menuData["Promocoes Sushi da Fazenda"] || []).slice(0, 4);
+  const promoItems = (menuData["Promoções Sushi da Fazenda"] || []).slice(0, 4);
   if (!promoItems.length) return;
 
   promoTrackEl.innerHTML = "";
@@ -270,12 +275,12 @@ function renderPromoBanner() {
     slide.innerHTML = `
       <img class="promo-slide-bg" src="${item.image}" alt="${item.name}">
       <div class="promo-content">
-        <span class="promo-chip">SELECAO EXCLUSIVA</span>
+        <span class="promo-chip">SELEÇÃO EXCLUSIVA</span>
         <h3>${item.name}</h3>
         <p>${item.description}</p>
         <div class="promo-footer">
           <span class="promo-price">${item.price}</span>
-          <a class="promo-cta" href="https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`Oi, quero aproveitar a promocao: ${item.name}`)}" target="_blank" rel="noopener noreferrer">Pedir no WhatsApp</a>
+          <a class="promo-cta" href="https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`Oi, quero aproveitar a promoção: ${item.name}`)}" target="_blank" rel="noopener noreferrer">Pedir no WhatsApp</a>
         </div>
       </div>
     `;
@@ -424,6 +429,95 @@ function checkoutWhatsApp() {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
+function scoreItemForProfile(item, profile) {
+  const name = item.name.toLowerCase();
+  const description = item.description.toLowerCase();
+  const text = `${name} ${description}`;
+  let score = 0;
+
+  if (profile === "premium") {
+    if (text.includes("salm")) score += 4;
+    if (text.includes("barca")) score += 2;
+    if (parsePriceToNumber(item.price) >= 40) score += 1;
+  }
+
+  if (profile === "economico") {
+    const price = parsePriceToNumber(item.price);
+    if (price <= 35) score += 4;
+    if (text.includes("combo") || text.includes("promo")) score += 3;
+  }
+
+  if (profile === "equilibrado") {
+    if (text.includes("combo") || text.includes("barca")) score += 2;
+    if (text.includes("temaki") || text.includes("hot")) score += 1;
+  }
+
+  return score;
+}
+
+function generateSmartCombo() {
+  if (!occasionSelectEl || !budgetInputEl || !profileSelectEl || !suggestorResultEl) return;
+
+  const selectedOccasion = occasionSelectEl.querySelector(".choice-chip.active");
+  const selectedProfile = profileSelectEl.querySelector(".choice-chip.active");
+  const occasion = selectedOccasion?.dataset.value || "solo";
+  const profile = selectedProfile?.dataset.value || "equilibrado";
+  const budgetValue = Number(budgetInputEl.value);
+  const budget = Number.isFinite(budgetValue) && budgetValue > 0 ? budgetValue : 120;
+
+  const targetCounts = {
+    solo: 2,
+    casal: 3,
+    familia: 5,
+  };
+  const desiredItems = targetCounts[occasion] || 3;
+
+  const allItems = Object.entries(menuData).flatMap(([category, items]) =>
+    items.map((item) => ({ ...item, category }))
+  );
+
+  const scored = allItems
+    .map((item) => ({
+      ...item,
+      score: scoreItemForProfile(item, profile) + Math.max(0, 3 - parsePriceToNumber(item.price) / 30),
+    }))
+    .sort((a, b) => b.score - a.score);
+
+  const selected = [];
+  let total = 0;
+
+  for (const item of scored) {
+    const price = parsePriceToNumber(item.price);
+    if (selected.length < desiredItems && total + price <= budget) {
+      selected.push(item);
+      total += price;
+    }
+  }
+
+  if (!selected.length) {
+    selected.push(scored[0]);
+    total = parsePriceToNumber(scored[0].price);
+  }
+
+  suggestorResultEl.innerHTML = `
+    <h3>Combo inteligente sugerido</h3>
+    <p>Perfil: <strong>${profile}</strong> | Ocasião: <strong>${occasion}</strong> | Total estimado: <strong>${formatCurrency(total)}</strong></p>
+    <ul class="suggestor-list">
+      ${selected.map((item) => `<li>${item.name} - ${item.price}</li>`).join("")}
+    </ul>
+    <div class="suggestor-actions">
+      <button class="btn" type="button" id="add-suggested-btn">Adicionar combo ao carrinho</button>
+      <a class="btn btn-ghost" target="_blank" rel="noopener noreferrer"
+        href="https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`Oi! Quero este combo sugerido pelo site:\n${selected.map((item) => `- ${item.name} (${item.price})`).join("\n")}\nTotal estimado: ${formatCurrency(total)}`)}">Enviar no WhatsApp</a>
+    </div>
+  `;
+
+  const addSuggestedBtn = document.querySelector("#add-suggested-btn");
+  addSuggestedBtn?.addEventListener("click", () => {
+    selected.forEach((item) => addToCart(item));
+  });
+}
+
 cartTriggerEl.addEventListener("click", openCart);
 closeCartEl.addEventListener("click", closeCart);
 closeItemModalEl.addEventListener("click", closeItemModal);
@@ -435,6 +529,23 @@ addToCartBtnEl.addEventListener("click", () => {
   if (selectedItem) addToCart(selectedItem);
 });
 checkoutBtnEl.addEventListener("click", checkoutWhatsApp);
+generateComboBtnEl?.addEventListener("click", generateSmartCombo);
+
+function setupChoiceGroups() {
+  const groups = [occasionSelectEl, profileSelectEl];
+  groups.forEach((group) => {
+    if (!group) return;
+    const chips = group.querySelectorAll(".choice-chip");
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        chips.forEach((item) => item.classList.remove("active"));
+        chip.classList.add("active");
+      });
+    });
+  });
+}
+
+setupChoiceGroups();
 
 renderTabs();
 renderMenu();

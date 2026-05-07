@@ -2,11 +2,13 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sushi Fazenda | Cardapio Premium</title>
+    <meta name="color-scheme" content="dark" />
+    <title>Sushi Fazenda | Cardápio Premium</title>
     <meta
       name="description"
-      content="Cardapio completo do Sushi Fazenda com layout clean, categorias estilizadas e pedido direto no WhatsApp."
+      content="Cardápio completo do Sushi Fazenda com layout clean, categorias estilizadas e pedido direto no WhatsApp."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,9 +30,10 @@
         Sushi Fazenda
       </a>
       <nav class="nav">
-        <a href="#inicio">Inicio</a>
-        <a href="#menu">Cardapio</a>
+        <a href="#inicio">Início</a>
+        <a href="#menu">Cardápio</a>
         <a href="#categorias">Categorias</a>
+        <a href="#sugestor">Sugestor Smart</a>
       </nav>
       <div class="header-actions">
         <button class="cart-trigger" id="cart-trigger" type="button" aria-label="Abrir carrinho">
@@ -44,46 +47,46 @@
       <section class="hero" id="inicio">
         <div class="hero-content reveal">
           <p class="eyebrow">SUSHI FAZENDA</p>
-          <h1>Cardapio completo em um layout novo, clean e premium.</h1>
+          <h1>Cardápio completo em um layout novo, clean e premium.</h1>
           <p class="hero-text">
             Paleta em vermelho e preto, categorias elegantes e produtos com
-            fotos reais para uma experiencia de compra mais moderna.
+            fotos reais para uma experiência de compra mais moderna.
           </p>
           <div class="hero-actions">
             <a class="btn" href="https://wa.me/5531996559603?text=Oi%2C%20vim%20pelo%20site%20e%20quero%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Fazer pedido</a>
-            <a class="btn btn-ghost" href="#menu">Explorar cardapio</a>
+            <a class="btn btn-ghost" href="#menu">Explorar cardápio</a>
           </div>
           <div class="hero-metrics">
             <div>
               <strong>4.9</strong>
-              <span>Avaliacao media</span>
+              <span>Avaliação média</span>
             </div>
             <div>
               <strong>WhatsApp</strong>
               <span>Atendimento direto</span>
             </div>
             <div>
-              <strong>Cardapio real</strong>
+              <strong>Cardápio real</strong>
               <span>Itens oficiais</span>
             </div>
           </div>
         </div>
         <div class="hero-card reveal">
           <div class="hero-card-glow"></div>
-          <h3>Promocao Barca Top Salmao</h3>
-          <p>33 pecas com brinde de 5 unidades simples.</p>
+          <h3>Promoção Barca Top Salmão</h3>
+          <p>33 peças com brinde de 5 unidades simples.</p>
           <div class="price-row">
             <span class="price">R$ 145,00</span>
             <span class="tag">Mais pedido</span>
           </div>
-          <a class="btn btn-full" href="https://wa.me/5531996559603?text=Oi%2C%20quero%20pedir%20a%20Promocao%20Barca%20Top%20Salmao." target="_blank" rel="noopener noreferrer">Pedir no WhatsApp</a>
+          <a class="btn btn-full" href="https://wa.me/5531996559603?text=Oi%2C%20quero%20pedir%20a%20Promoção%20Barca%20Top%20Salmão." target="_blank" rel="noopener noreferrer">Pedir no WhatsApp</a>
         </div>
       </section>
 
       <section class="promo-strip reveal" id="promocoes-do-dia">
         <div class="section-head">
-          <p class="eyebrow">PROMOCOES DO DIA</p>
-          <h2>Selecao exclusiva para uma experiencia de sushi premium.</h2>
+          <p class="eyebrow">PROMOÇÕES DO DIA</p>
+          <h2>Seleção exclusiva para uma experiência de sushi premium.</h2>
         </div>
         <div class="promo-banner" id="promo-banner">
           <button class="promo-nav prev" id="promo-prev" aria-label="Promoção anterior">‹</button>
@@ -96,25 +99,61 @@
       <section class="section reveal" id="categorias">
         <div class="section-head">
           <p class="eyebrow">CATEGORIAS</p>
-          <h2>Navegue pelo cardapio de forma rapida e elegante.</h2>
+          <h2>Navegue pelo cardápio de forma rápida e elegante.</h2>
         </div>
         <div class="category-tabs" id="category-tabs"></div>
       </section>
 
       <section class="section reveal" id="menu">
         <div class="section-head">
-          <p class="eyebrow">CARDAPIO</p>
+          <p class="eyebrow">CARDÁPIO</p>
           <h2>Itens, fotos e valores organizados por categoria.</h2>
         </div>
         <div class="menu-grid" id="menu-grid"></div>
       </section>
 
+      <section class="section reveal suggestor" id="sugestor">
+        <div class="section-head">
+          <p class="eyebrow">INOVAÇÃO DA CASA</p>
+          <h2>Sugestor Smart de Pedido</h2>
+        </div>
+        <p class="suggestor-text">
+          Escolha ocasião, orçamento e estilo de sabor. O sistema monta um combo inteligente e já envia para o carrinho.
+        </p>
+        <div class="suggestor-controls">
+          <div class="field-group">
+            <span>Ocasião</span>
+            <div class="choice-group" id="occasion-select" role="radiogroup" aria-label="Escolha a ocasião">
+              <button class="choice-chip active" type="button" data-value="solo">Solo (1 pessoa)</button>
+              <button class="choice-chip" type="button" data-value="casal">Casal</button>
+              <button class="choice-chip" type="button" data-value="familia">Família/Grupo</button>
+            </div>
+          </div>
+          <label>
+            Orçamento máximo
+            <input id="budget-input" type="number" min="30" step="5" value="120" />
+          </label>
+          <div class="field-group">
+            <span>Preferência</span>
+            <div class="choice-group" id="profile-select" role="radiogroup" aria-label="Escolha a preferência">
+              <button class="choice-chip active" type="button" data-value="equilibrado">Equilibrado</button>
+              <button class="choice-chip" type="button" data-value="premium">Premium salmão</button>
+              <button class="choice-chip" type="button" data-value="economico">Custo-benefício</button>
+            </div>
+          </div>
+          <button class="btn" id="generate-combo-btn" type="button">Gerar combo inteligente</button>
+        </div>
+        <div class="suggestor-result" id="suggestor-result">
+          <p>Seu combo recomendado aparecerá aqui.</p>
+        </div>
+      </section>
+
       <section class="cta reveal" id="pedido">
         <h2>Feche seu pedido em segundos.</h2>
         <p>
-          Clique no botao abaixo para ir direto para a conversa no WhatsApp.
+          Clique no botão abaixo para ir direto para a conversa no WhatsApp.
         </p>
-        <a class="btn" href="https://wa.me/5531996559603?text=Oi%2C%20quero%20ver%20o%20cardapio%20e%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Quero pedir agora</a>
+        <a class="btn" href="https://wa.me/5531996559603?text=Oi%2C%20quero%20ver%20o%20cardápio%20e%20fazer%20um%20pedido." target="_blank" rel="noopener noreferrer">Quero pedir agora</a>
       </section>
     </main>
 
