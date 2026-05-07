@@ -462,7 +462,27 @@ function scoreItemForProfile(item, profile) {
   return score;
 }
 
-function buildComboFromOrderedItems(orderedItems, desiredItems, budget, profile) {
+function getBudgetTier(budget) {
+  if (budget < 75) return "baixo";
+  if (budget < 140) return "medio";
+  return "alto";
+}
+
+function scoreItemForBudget(item, budget, desiredItems, budgetTier) {
+  const price = parsePriceToNumber(item.price);
+  const targetPerItem = Math.max(8, budget / Math.max(1, desiredItems));
+  const distanceRatio = Math.abs(price - targetPerItem) / targetPerItem;
+  let score = Math.max(-4, 4 - distanceRatio * 6);
+
+  const category = (item.category || "").toLowerCase();
+  if (budgetTier === "alto" && price <= 12) score -= 3;
+  if (budgetTier === "baixo" && price > budget * 0.6) score -= 5;
+  if (budgetTier === "alto" && (category.includes("molhos") || category.includes("acréscimos"))) score -= 2;
+
+  return score;
+}
+
+function buildComboFromOrderedItems(orderedItems, desiredItems, budget, profile, minSpendTarget) {
   // No modo econômico, primeiro escolhemos itens principais para evitar combos formados só por molhos/acréscimos.
   const isComplementCategory = (item) => {
     const category = (item.category || "").toLowerCase();
@@ -498,6 +518,30 @@ function buildComboFromOrderedItems(orderedItems, desiredItems, budget, profile)
         selected.push(item);
         total += price;
       }
+    }
+  }
+
+  if (selected.length && total < minSpendTarget) {
+    const selectedNames = new Set(selected.map((item) => item.name));
+    const remainingCandidates = orderedItems.filter((item) => !selectedNames.has(item.name));
+
+    for (const candidate of remainingCandidates) {
+      if (total >= minSpendTarget) break;
+      const candidatePrice = parsePriceToNumber(candidate.price);
+      let replaced = false;
+
+      for (let idx = 0; idx < selected.length; idx += 1) {
+        const currentPrice = parsePriceToNumber(selected[idx].price);
+        const nextTotal = total - currentPrice + candidatePrice;
+        if (nextTotal <= budget && nextTotal > total) {
+          selected[idx] = candidate;
+          total = nextTotal;
+          replaced = true;
+          break;
+        }
+      }
+
+      if (replaced) continue;
     }
   }
 
@@ -574,6 +618,13 @@ function generateSmartCombo() {
     familia: 5,
   };
   const desiredItems = targetCounts[occasion] || 3;
+  const budgetTier = getBudgetTier(budget);
+  const targetSpendRatioByOccasion = {
+    solo: 0.72,
+    casal: 0.82,
+    familia: 0.88,
+  };
+  const minSpendTarget = budget * (targetSpendRatioByOccasion[occasion] || 0.8);
 
   const allItems = Object.entries(menuData).flatMap(([category, items]) =>
     items.map((item) => ({ ...item, category }))
@@ -582,7 +633,10 @@ function generateSmartCombo() {
   const scored = allItems
     .map((item) => ({
       ...item,
-      score: scoreItemForProfile(item, profile) + Math.max(0, 3 - parsePriceToNumber(item.price) / 30),
+      score:
+        scoreItemForProfile(item, profile) +
+        scoreItemForBudget(item, budget, desiredItems, budgetTier) +
+        Math.max(0, 2 - parsePriceToNumber(item.price) / 45),
     }))
     .sort((a, b) => b.score - a.score);
 
@@ -591,7 +645,7 @@ function generateSmartCombo() {
   for (let attempt = 0; attempt < scored.length; attempt += 1) {
     const offset = (suggestedCombos.length * 2 + attempt) % scored.length;
     const ordered = [...scored.slice(offset), ...scored.slice(0, offset)];
-    const combo = buildComboFromOrderedItems(ordered, desiredItems, budget, profile);
+    const combo = buildComboFromOrderedItems(ordered, desiredItems, budget, profile, minSpendTarget);
     if (!combo.selected.length) continue;
     const signature = combo.selected.map((item) => item.name).sort().join("|");
     if (!suggestedSignatures.has(signature)) {
@@ -601,7 +655,7 @@ function generateSmartCombo() {
   }
 
   if (!chosenCombo && scored.length) {
-    const fallback = buildComboFromOrderedItems(scored, desiredItems, budget, profile);
+    const fallback = buildComboFromOrderedItems(scored, desiredItems, budget, profile, minSpendTarget);
     if (fallback.selected.length) {
       chosenCombo = {
         ...fallback,
